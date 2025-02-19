@@ -77,6 +77,7 @@ console.log(area1(largura,altura))
 
 console.log ("")
 alert(`Ex 8`)
+
 let idade1 = Number(prompt("Qual a primeira idade?"))
     let idade2 = Number(prompt("Qual a segunda idade?"))
 
