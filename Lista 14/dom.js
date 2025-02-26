@@ -66,26 +66,3 @@ terceiroBotao.addEventListener("click", function(){
     terceiroParagrafo.style.fontSize = "30px"
     terceiroTexto.style.borderRadius = "40px"
 })
-
-
-
-
-
-
-
-
-let texto = document.getElementById("texto")
-texto.innerText = "Texto Alterado"
-texto.style.color = "blue"
-let button = document.getElementById("button")
-
-let passe = document.getElementById("passe")
-passe.addEventListener("mousemove", function(){
-    passe.innerText = "o mouse está aqui"
-    passe.style.backgroundColor = "yellow"
-})
-passe.addEventListener("mouseout", function(){
-    passe.innerText = "passe o mouse aqui"
-    passe.style.backgroundColor = "cyan"
-    passe.style.fontSize = "16px"
-})
