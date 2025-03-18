@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista 18</title>
+</head>
+<body>
+    <input type="text" id="num" oninput="roundAll()" placeholder="Insira um numero:">
+    <p id="round"></p>
+    <p id="roundUp"></p>
+    <p id="roundDown"></p>
+
+    <input type="text" id="nome" oninput="mostrarNome()" placeholder="Digite seu nome:">
+    <p id="Alta"></p>
+    <p id="Baixa"></p>
+
+    <p id="ram"></p>
+
+   <input type="number" id="decimal" oninput="nayara()" placeholder="Digite um numero decimal">
+   <p id="decDuas"></p>
+
+   <input type="text" id="original" placeholder="Digite um texto:">
+   <input type="text" id="palavraNova" placeholder="Escolha uma nova palavra:">
+   <input type="text" id="palavraFora" placeholder="Escolha uma palavra para sair:" style="width: 200px;">
+   <button id="trocarPalavra" onclick="Trocar()">Realizar trocar</button>
+   <p id="nova"></p>
+
+   <input type="text" id="numOrNot" placeholder="Escreva o que quiser" oninput="verifyNum()">
+   <p id="veredito"></p>
+
+   <input type="text" id="TXTbase" placeholder="Escreva o que desejar:">
+   <input type="number" id="numAverificar" oninput="verifyPosition()" placeholder="Escolha um numero:">
+   <p id="resultPosition"></p>
+
+   <input type="text" id="nome1" placeholder="Digite seu nome:">
+   <input type="text" id="sobrenome" placeholder="Digite seu sobrenome:">
+   <button id="completarNome" onclick="completarNome()">Completar nome</button>
+   <p id="nomeCompleto"></p>
+
+   <input type="number" id="num1" placeholder="Digite o primeiro número">
+   <input type="number" id="num2" placeholder="Digite o segundo número">
+   <button onclick="somarNumeros()">Somar</button>
+   <p id="resultadoSoma"></p>
+   
+
+   <input type="number" id="idade" placeholder="Digite sua idade" oninput="verifyAge()">
+   <p id="resultadoIdade"></p>
+
+    <script src="coleta.js"></script>
+</body>
+</html>
