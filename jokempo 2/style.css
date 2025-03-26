@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+    font: 700 30px;
+    font-family: 'Minecraft', sans-serif;
+}
+body {
+    background-attachment: fixed;
+    background-image: url(img/minecraft.gif);
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+}
+#title, #Mensagem{
+    text-align: center;
+    color: white;
+}
+#jogador{
+    background-color: #F2E2B1;
+    opacity: 80%;
+}
+#pc{
+    background-color: #B17F59;
+    opacity: 80%;
+}
+#jogadorEscolha, #pcEscolha{
+    list-style: none;
+}
+#jogadorEscolha li, #pcEscolha li{
+    display: inline;
+}
+img{
+    width: 200px;
+    margin: 0 25px;
+    opacity: 100%;
+}
+#placar{
+    align-items: center;
+    justify-content: center;
+    display: inline-block;
+    display: flex;
+    margin: 50px;
+}
+#vs{
+    margin: 50px;
+    color: white;
+}
+#jogadorEscolha li a, #pcEscolha li a {
+    opacity: 0.2;
+    transition: ease-in-out 0.2s;
+}
+#jogadorEscolha li a:hover, #jogadorEscolha li a.selecionado, #pcEscolha li a.selecionado{
+    opacity: 1;
+}
