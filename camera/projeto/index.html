@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camara</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <video autoplay></video>
+    <select id="filtro">
+        <option value="none">Nenhum</option>
+        <option value="grayscale(100%)">Grayscale</option>
+        <option value="sepia(100%)">Sepia</option>
+        <option value="blur(5px)">Blur</option>
+        <option value="invert(100%)">Inverter</option>
+    </select>
+    <button id="capturar">Tirar Foto</button>
+    <canvas style="display: none;"></canvas>
+    <script src="script.js"></script>
+</body>
+</html>
