@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cubo Mágico 3D</title>
+  <style>
+    body {
+      background: #111;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .scene {
+      width: 300px;
+      height: 300px;
+      perspective: 1000px;
+    }
+
+    .cube {
+      width: 300px;
+      height: 300px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(-20deg) rotateY(30deg);
+      transition: transform 1s ease;
+    }
+
+    .cubie {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      transform-style: preserve-3d;
+      transition: transform 0.5s ease;
+    }
+
+    .face {
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      background: gray;
+      opacity: 0.95;
+      border: 1px solid black;
+    }
+
+    .f-front  { background: red;    transform: translateZ(45px); }
+    .f-back   { background: orange; transform: rotateY(180deg) translateZ(45px); }
+    .f-right  { background: blue;   transform: rotateY(90deg)  translateZ(45px); }
+    .f-left   { background: green;  transform: rotateY(-90deg) translateZ(45px); }
+    .f-top    { background: white;  transform: rotateX(90deg)  translateZ(45px); }
+    .f-bottom { background: yellow; transform: rotateX(-90deg) translateZ(45px); }
+
+    button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+    }
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      display: flex;
+      gap: 10px;
+    }
+    .controls button {
+      padding: 8px 12px;
+      background: #222;
+      color: white;
+      border: 1px solid #555;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="scene">
+  <div class="cube" id="cube"></div>
+</div>
+<button onclick="scramble()">Embaralhar</button>
+
+<div class="controls">
+    <button onclick="rotate('x', 90)">Girar X+</button>
+    <button onclick="rotate('x', -90)">Girar X-</button>
+    <button onclick="rotate('y', 90)">Girar Y+</button>
+    <button onclick="rotate('y', -90)">Girar Y-</button>
+    <button onclick="rotate('z', 90)">Girar Z+</button>
+    <button onclick="rotate('z', -90)">Girar Z-</button>
+  </div>
+
+<script>
+  const cube = document.getElementById("cube");
+  const size = 3;
+  const spacing = 100;
+  const cubies = [];
+
+  // Cria 27 cubies (3x3x3)
+  for (let x = -1; x <= 1; x++) {
+    for (let y = -1; y <= 1; y++) {
+      for (let z = -1; z <= 1; z++) {
+        const cubie = document.createElement("div");
+        cubie.className = "cubie";
+        cubie.dataset.pos = `${x},${y},${z}`;
+        cubie.style.transform = `translate3d(${x * spacing}px, ${y * spacing}px, ${z * spacing}px)`;
+        
+        // Adiciona faces coloridas apenas nas externas
+        const faces = [
+          { dir: 'front',  cond: z === 1 },
+          { dir: 'back',   cond: z === -1 },
+          { dir: 'right',  cond: x === 1 },
+          { dir: 'left',   cond: x === -1 },
+          { dir: 'top',    cond: y === 1 },
+          { dir: 'bottom', cond: y === -1 },
+        ];
+        faces.forEach(face => {
+          if (face.cond) {
+            const f = document.createElement("div");
+            f.className = `face f-${face.dir}`;
+            cubie.appendChild(f);
+          }
+        });
+
+        cube.appendChild(cubie);
+        cubies.push({ element: cubie, x, y, z });
+      }
+    }
+  }
+
+  function rotateLayer(axis, index, angle) {
+    const filtered = cubies.filter(c => c[axis] === index);
+    filtered.forEach(c => {
+      c.element.style.transition = 'transform 0.5s ease';
+      const current = getComputedStyle(c.element).transform;
+      c.element.style.transform += ` rotate${axis.toUpperCase()}(${angle}deg)`;
+    });
+  }
+
+  function scramble() {
+    const axes = ['x', 'y', 'z'];
+    for (let i = 0; i < 10; i++) {
+      const axis = axes[Math.floor(Math.random() * 3)];
+      const index = [-1, 0, 1][Math.floor(Math.random() * 3)];
+      const angle = [90, -90][Math.floor(Math.random() * 2)];
+      setTimeout(() => rotateLayer(axis, index, angle), i * 500);
+    }
+  }
+
+  let rotateX = -30;
+    let rotateY = 30;
+    let rotateZ = 0;
+
+    function rotate(axis, angle) {
+      if (axis === 'x') rotateX += angle;
+      if (axis === 'y') rotateY += angle;
+      if (axis === 'z') rotateZ += angle;
+
+      document.getElementById('cube').style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedido</title>
+    <style>
+        body{
+            font-family: serif;
+            color: goldenrod;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            background: linear-gradient(rgb(0, 120, 140), rgb(29, 17, 96));
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .btn{
+            background-color: rgb(29, 17, 96);
+            color: goldenrod;
+            font: 300 30px;
+            padding: 15px 20px;
+            margin: 80px;
+            transition: ease-in-out 0.2s;
+            width: 200px;
+        }
+        .titulo{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="titulo">
+        <h1 class="tituloPrincipal">Lamelo Ball?</h1>
+    </div>
+    <div class="botoes">
+        <div class="botaoS">
+            <button class="btn" onclick="sim()">SIM</button>
+        </div>
+        <div class="botaoN">
+            <button id="btn" class="btn" onclick="desvia()" onmouseover="desvia()">NÃO</button>
+        </div>
+    </div>
+    <script>
+        function sim(){
+            window.location.href="https://youtu.be/9y7vb7Qwhgw?feature=shared"
+        }
+        function desvia(){
+            let btn = document.getElementById("btn")
+            btn.style.position="absolute"
+            btn.style.bottom = gerarPosição(10,80)
+            btn.style.left = gerarPosição(10,80)
+        }
+        function gerarPosição(max,min){
+            return (Math.random()*(max-min)+min)+"%"
+        }
+    </script>
+</body>
+</html>
