@@ -10,6 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const botaoFormando = document.getElementById('formando');
     const textoNivel = document.getElementById('Nivel');
 
+    const musicaFundo = new Audio('som/musica.mp3');
+    const somVitoria = new Audio('som/vitoria.mp3');
+    const somClick = new Audio('som/click.mp3');
+
+    musicaFundo.loop = true;
+    musicaFundo.volume = 0.7;
+    musicaFundo.play();
+
     let pecas = [];
     let indiceVazio = 0;
     let contadorMovimentosTotal = 0;
@@ -49,6 +57,9 @@ document.addEventListener("DOMContentLoaded", () => {
     botaoFormando.addEventListener('click', () => definirDificuldade('formando'));
 
     function iniciarPuzzle() {
+        somClick.currentTime = 0;
+        somClick.volume = 0.5;
+        somClick.play();
         botaoEmbaralhar.disabled = false;
         botaoEmbaralhar.classList.remove('desativado');
         botaoNovato.disabled = false;
@@ -194,6 +205,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (jogoAtivo && verificarVitoria()) {
             jogoAtivo = false;
+            somVitoria.currentTime = 0;
+            somVitoria.volume = 1;
+            somVitoria.play();
             clearInterval(intervalo);
             botaoEmbaralhar.disabled = true;
             botaoEmbaralhar.classList.add('desativado');
@@ -241,12 +255,16 @@ document.addEventListener("DOMContentLoaded", () => {
             contadorMovimentos.textContent = contadorMovimentosTotal.toString();
             atualizarTabuleiro();
         }
+        somClick.currentTime = 0;
+        somClick.volume = 1;
+        somClick.play();
     }
 
     function verificarVitoria() {
         for (let i = 0; i < totalPecas - 1; i++) {
             if (pecas[i].dataset.value !== (i + 1).toString()) return false;
         }
+        
         return pecas[totalPecas - 1].dataset.value === 'empty';
     }
 

@@ -8,61 +8,63 @@
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="img/mundo senai1.png" type="image/x-icon">
 </head>
+
 <body class="body-bg">
-         <div class="header">
-            <img src="img/mundo senai1.png" alt="Logo" class="logo-img">
-        </div>
-        <h1 class="logo">Sliding in SENAI</h1>
-        <h3 id="Nivel"></h3>
-        <p class="subtitle"> Ajeite o quebra-cabeça na ordem correta deslizando as peças</p>
-        <div class="game-wrapper">
-            <div class="puzzle-container">
-                <div id="puzzle-board" class="puzzle-board"></div>
-                <div id="win-message" class="win-overlay hidden">
-                    <div class="win-message">
-                        <h2 class="win-title">Parabens!</h2>
-                        <p class="win-text">Você tem postura SENAI!</p>
-                        <button id="play-again" class="btn">Jogar Novamente</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="side-panel">
-                <div class="controls">
-                    <button id="shuffle-btn" class="btn with-icon">
-                        Embaralhar
-                    </button>
-                </div>
-
-                <div class="stats">
-                    <h3 class="panel-title">Status de jogo</h3>
-                    <div class="stat-line">
-                        <span class="stat-label">Movimentos:</span>
-                        <span id="move-count" class="stat-value">0</span>
-                    </div>
-                    <div class="stat-line">
-                        <span class="stat-label">Tempo:</span>
-                        <span id="time-count" class="stat-value">0s</span>
-                    </div>
+    <div class="header">
+        <img src="img/mundo senai1.png" alt="Logo" class="logo-img">
+    </div>
+    <h1 class="logo">Sliding in SENAI</h1>
+    <h3 id="Nivel"></h3>
+    <p class="subtitle"> Ajeite o quebra-cabeça na ordem correta deslizando as peças</p>
+    <div class="game-wrapper">
+        <div class="puzzle-container">
+            <div id="puzzle-board" class="puzzle-board"></div>
+            <div id="win-message" class="win-overlay hidden">
+                <div class="win-message">
+                    <h2 class="win-title">Parabens!</h2>
+                    <p class="win-text">Você tem postura SENAI!</p>
+                    <button id="play-again" class="btn">Jogar Novamente</button>
                 </div>
             </div>
         </div>
-        <div class="botoes-nivel">
-            <button id="novato" class="btn">
-                Novato
-            </button>
-            <button id="experiente" class="btn">
-                Experiente
-            </button>
-            <button id="formando" class="btn">
-                Formando
-            </button>
+
+        <div class="side-panel">
+            <div class="controls">
+                <button id="shuffle-btn" class="btn with-icon">
+                    Embaralhar
+                </button>
+            </div>
+
+            <div class="stats">
+                <h3 class="panel-title">Status de jogo</h3>
+                <div class="stat-line">
+                    <span class="stat-label">Movimentos:</span>
+                    <span id="move-count" class="stat-value">0</span>
+                </div>
+                <div class="stat-line">
+                    <span class="stat-label">Tempo:</span>
+                    <span id="time-count" class="stat-value">0s</span>
+                </div>
+            </div>
         </div>
+    </div>
+    <div class="botoes-nivel">
+        <button id="novato" class="btn">
+            Novato
+        </button>
+        <button id="experiente" class="btn">
+            Experiente
+        </button>
+        <button id="formando" class="btn">
+            Formando
+        </button>
+    </div>
     </div>
     <footer>
         <div class="footer-content">
             <p>Versão 1.6</p>
-            <p>Desenvolvido por: <strong><br>Miguel Wickboldt <br> Ana Carolina <br>Manuela Renzi <br>Matheus Souza</strong></p>
+            <p>Desenvolvido por: <strong><br>Miguel Wickboldt <br> Ana Carolina <br>Manuela Renzi <br>Matheus
+                    Souza</strong></p>
             <p>Curso: <strong>Desenvolvimento de Sistemas</strong></p>
         </div>
     </footer>

@@ -239,3 +239,23 @@ footer{
     pointer-events: none;
     opacity: 0.5;
 }
+.ranking-panel {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.ranking-list {
+    padding-left: 1rem;
+    color: #374151;
+}
+
+.ranking-list li {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #A10C10;
+}
