@@ -26,18 +26,23 @@
     .botoes-nivel button:hover {
       background-color: #ddd;
     }
-.header img{
-    width: 200px;
+header{
+    width: 100%;
+    background: #C1272C;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: -350px;
+    padding: 50px;
+    margin-bottom: 90px;
 }
 .header-content{
     color: white;
     display: flex;
     text-align: center;
     gap: 2rem;
-}
-.header-content img{
-    width: 300px;
-    height: 300px;
 }
 .body-bg {
     background-color: #F5F6F8;
@@ -52,9 +57,6 @@
 .container {
     max-width: 960px;
     width: 100%;
-    display: grid;
-    justify-content: center;
-    align-items: center;
 }
 
 .main-title {
@@ -225,17 +227,4 @@
 .transparente {
     background-color: transparent;
     cursor: default;
-}
-footer{
-    color: rgb(83, 83, 83);
-    padding: 1rem;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-top: 20px;
-}
-.desativado {
-    background-color: #d1d0d0;
-    pointer-events: none;
-    opacity: 0.5;
 }

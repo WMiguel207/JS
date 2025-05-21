@@ -1,223 +1,260 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const board = document.getElementById('puzzle-board');
-    const shuffleBtn = document.getElementById('shuffle-btn');
-    const moveCount = document.getElementById('move-count');
-    const timeCount = document.getElementById('time-count');
-    const winMessage = document.getElementById('win-message');
-    const playAgainBtn = document.getElementById('play-again');
-    const novato = document.getElementById('novato');
-    const experiente = document.getElementById('experiente');
-    const formando = document.getElementById('formando');
-    const nivelText = document.getElementById('Nivel');
+    const tabuleiro = document.getElementById('puzzle-board');
+    const botaoEmbaralhar = document.getElementById('shuffle-btn');
+    const contadorMovimentos = document.getElementById('move-count');
+    const contadorTempo = document.getElementById('time-count');
+    const mensagemVitoria = document.getElementById('win-message');
+    const botaoJogarNovamente = document.getElementById('play-again');
+    const botaoNovato = document.getElementById('novato');
+    const botaoExperiente = document.getElementById('experiente');
+    const botaoFormando = document.getElementById('formando');
+    const textoNivel = document.getElementById('Nivel');
 
-    let tiles = [];
-    let emptyIndex = 0;
-    let moveCounter = 0;
-    let timer = 0;
-    let timerInterval = null;
-    let isGameActive = false;
+    let pecas = [];
+    let indiceVazio = 0;
+    let contadorMovimentosTotal = 0;
+    let tempo = 0;
+    let intervalo = null;
+    let jogoAtivo = false;
 
-    let gridSize = 4;
-    let totalTiles = 16;
-    let currentDifficulty = 'formando';
+    let tamanhoGrade = 4;
+    let totalPecas = 16;
+    let dificuldadeAtual = 'novato';
 
-    function setDifficulty(difficulty) {
-        switch (difficulty) {
+    function definirDificuldade(dificuldade) {
+        switch (dificuldade) {
             case 'novato':
-                gridSize = 2;
-                totalTiles = 4;
-                nivelText.textContent = 'Nível: Novato';
+                tamanhoGrade = 2;
+                totalPecas = 4;
+                textoNivel.textContent = 'Nível: Novato';
                 break;
             case 'experiente':
-                gridSize = 3;
-                totalTiles = 9;
-                nivelText.textContent = 'Nível: Experiente';
+                tamanhoGrade = 3;
+                totalPecas = 9;
+                textoNivel.textContent = 'Nível: Experiente';
                 break;
             case 'formando':
-                gridSize = 4;
-                totalTiles = 16;
-                nivelText.textContent = 'Nível: Formando';
+                tamanhoGrade = 4;
+                totalPecas = 16;
+                textoNivel.textContent = 'Nível: Formando';
                 break;
         }
-        currentDifficulty = difficulty;
-        initPuzzle();
-        shufflePuzzle();
+        dificuldadeAtual = dificuldade;
+        iniciarPuzzle();
+        embaralharPuzzle();
     }
 
-    novato.addEventListener('click', () => setDifficulty('novato'));
-    experiente.addEventListener('click', () => setDifficulty('experiente'));
-    formando.addEventListener('click', () => setDifficulty('formando'));
+    botaoNovato.addEventListener('click', () => definirDificuldade('novato'));
+    botaoExperiente.addEventListener('click', () => definirDificuldade('experiente'));
+    botaoFormando.addEventListener('click', () => definirDificuldade('formando'));
 
-    function initPuzzle() {
-        board.innerHTML = '';
-        tiles = [];
-        moveCounter = 0;
-        timer = 0;
-        isGameActive = false;
-        clearInterval(timerInterval);
-        moveCount.textContent = '0';
-        timeCount.textContent = '0s';
-        winMessage.classList.add('hidden');
+    function iniciarPuzzle() {
+        botaoEmbaralhar.disabled = false;
+        botaoEmbaralhar.classList.remove('desativado');
+        botaoNovato.disabled = false;
+        botaoNovato.classList.remove('desativado');
+        botaoExperiente.disabled = false;
+        botaoExperiente.classList.remove('desativado');
+        botaoFormando.disabled = false;
+        botaoFormando.classList.remove('desativado');
+        tabuleiro.style.backgroundImage = 'none';
+        tabuleiro.innerHTML = '';
+        pecas = [];
+        contadorMovimentosTotal = 0;
+        tempo = 0;
+        jogoAtivo = false;
+        clearInterval(intervalo);
+        contadorMovimentos.textContent = '0';
+        contadorTempo.textContent = '0s';
+        mensagemVitoria.classList.add('hidden');
 
-        board.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+        tabuleiro.style.gridTemplateColumns = `repeat(${tamanhoGrade}, 1fr)`;
 
-        for (let i = 0; i < totalTiles; i++) {
-            const tile = document.createElement('div');
-            tile.className = 'bloco';
-            tile.dataset.index = i;
+        for (let i = 0; i < totalPecas; i++) {
+            while (pecas[i] == i) {
+                i = Math.floor(Math.random() * totalPecas);
+            }
+            const peca = document.createElement('div');
+            peca.className = 'bloco';
+            peca.dataset.index = i;
 
-            if (i < totalTiles - 1) {
+            if (i < totalPecas - 1) {
                 const img = document.createElement('img');
-                img.src = `img/${currentDifficulty}/part${i + 1}.png`; 
+                img.src = `img/${dificuldadeAtual}/part${i + 1}.png`;
                 img.className = 'part';
                 img.style.width = '100%';
                 img.style.height = '100%';
-                tile.appendChild(img);
-                tile.dataset.value = i + 1;
+                peca.appendChild(img);
+                peca.dataset.value = i + 1;
             } else {
-                tile.dataset.value = 'empty';
-                emptyIndex = i;
+                peca.dataset.value = 'empty';
+                indiceVazio = i;
             }
 
-            tile.addEventListener('click', () => handleTileClick(i));
-            board.appendChild(tile);
-            tiles.push(tile);
+            peca.addEventListener('click', () => clicarPeca(i));
+            tabuleiro.appendChild(peca);
+            pecas.push(peca);
         }
 
-        updateBoard();
+        atualizarTabuleiro();
     }
 
-    function shufflePuzzle() {
-        moveCounter = 0;
-        timer = 0;
-        moveCount.textContent = '0';
-        timeCount.textContent = '0s';
-        clearInterval(timerInterval);
-        isGameActive = true;
+    function embaralharPuzzle() {
+        contadorMovimentosTotal = 0;
+        tempo = 0;
+        contadorMovimentos.textContent = '0';
+        contadorTempo.textContent = '0s';
+        clearInterval(intervalo);
+        jogoAtivo = true;
 
-timerInterval = setInterval(() => {
-    timer++;
+        intervalo = setInterval(() => {
+            tempo++;
 
-    const minutes = Math.floor(timer / 60);
-    const seconds = timer % 60;
+            const minutos = Math.floor(tempo / 60);
+            const segundos = tempo % 60;
 
-    if (minutes > 0) {
-        timeCount.textContent = `${minutes}m ${seconds.toString().padStart(2, '0')}s`;
-    } else {
-        timeCount.textContent = `${seconds}s`;
-    }
-}, 1000);
+            if (minutos > 0) {
+                contadorTempo.textContent = `${minutos}m ${segundos.toString().padStart(2, '0')}s`;
+            } else {
+                contadorTempo.textContent = `${segundos}s`;
+            }
+        }, 1000);
 
+        const valores = [...Array(totalPecas - 1).keys()].map(i => (i + 1).toString());
+        valores.push('empty');
 
-        const values = [...Array(totalTiles - 1).keys()].map(i => (i + 1).toString());
-        values.push('empty');
-
-        let currentEmpty = totalTiles - 1;
+        let vazioAtual = totalPecas - 1;
         for (let i = 0; i < 1000; i++) {
-            const possibleMoves = getValidMoves(currentEmpty);
-            const moveTo = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-            [values[currentEmpty], values[moveTo]] = [values[moveTo], values[currentEmpty]];
-            currentEmpty = moveTo;
+            const movimentosPossiveis = getMovimentosValidos(vazioAtual);
+            const moverPara = movimentosPossiveis[Math.floor(Math.random() * movimentosPossiveis.length)];
+            [valores[vazioAtual], valores[moverPara]] = [valores[moverPara], valores[vazioAtual]];
+            vazioAtual = moverPara;
         }
 
-        values.forEach((val, i) => {
-            tiles[i].dataset.value = val;
-            if (val === 'empty') emptyIndex = i;
+        valores.forEach((val, i) => {
+            pecas[i].dataset.value = val;
+            if (val === 'empty') indiceVazio = i;
         });
+     if (!jogoAtivo) return;
+     do{
+        for (let i = 0; i < 1000; i++) {    
+            const movimentosPossiveis = getMovimentosValidos(vazioAtual);
+            const moverPara = movimentosPossiveis[Math.floor(Math.random() * movimentosPossiveis.length)];
+            [valores[vazioAtual], valores[moverPara]] = [valores[moverPara], valores[vazioAtual]];
+            vazioAtual = moverPara;
+        }
+        valores.forEach((val, i) => {
+            pecas[i].dataset.value = val;
+            if (val === 'empty') indiceVazio = i;
+        });
+     }while(verificarVitoria());
 
-        updateBoard();
+
+    atualizarTabuleiro();
     }
 
-    function getValidMoves(index) {
-        const moves = [];
-        const row = Math.floor(index / gridSize);
-        const col = index % gridSize;
+    function getMovimentosValidos(indice) {
+        const movimentos = [];
+        const linha = Math.floor(indice / tamanhoGrade);
+        const coluna = indice % tamanhoGrade;
 
-        if (row > 0) moves.push(index - gridSize);
-        if (row < gridSize - 1) moves.push(index + gridSize);
-        if (col > 0) moves.push(index - 1);
-        if (col < gridSize - 1) moves.push(index + 1);
+        if (linha > 0) movimentos.push(indice - tamanhoGrade);
+        if (linha < tamanhoGrade - 1) movimentos.push(indice + tamanhoGrade);
+        if (coluna > 0) movimentos.push(indice - 1);
+        if (coluna < tamanhoGrade - 1) movimentos.push(indice + 1);
 
-        return moves;
+        return movimentos;
     }
 
-    function updateBoard() {
-        tiles.forEach(tile => {
-            const val = tile.dataset.value;
-            const img = tile.querySelector('img');
+    function atualizarTabuleiro() {
+        pecas.forEach(peca => {
+            const val = peca.dataset.value;
+            const img = peca.querySelector('img');
 
             if (val === 'empty') {
                 if (img) img.style.display = 'none';
-                tile.classList.add('transparente');
+                peca.classList.add('transparente');
             } else {
                 if (!img) {
-                    const newImg = document.createElement('img');
-                    newImg.src = `img/${currentDifficulty}/part${val}.png`;
-                    newImg.className = 'part';
-                    newImg.style.width = '100%';
-                    newImg.style.height = '100%';
-                    tile.appendChild(newImg);
+                    const novaImg = document.createElement('img');
+                    novaImg.src = `img/${dificuldadeAtual}/part${val}.png`;
+                    novaImg.className = 'part';
+                    novaImg.style.width = '100%';
+                    novaImg.style.height = '100%';
+                    peca.appendChild(novaImg);
                 } else {
-                    img.src = `img/${currentDifficulty}/part${val}.png`;
+                    img.src = `img/${dificuldadeAtual}/part${val}.png`;
                     img.style.display = 'block';
                 }
-                tile.classList.remove('transparente');
+                peca.classList.remove('transparente');
             }
 
-            tile.classList.remove('moving');
+            peca.classList.remove('moving');
         });
 
-       if (isGameActive && checkWin()) {
-    isGameActive = false;
+        if (jogoAtivo && verificarVitoria()) {
+            jogoAtivo = false;
+            clearInterval(intervalo);
+            botaoEmbaralhar.disabled = true;
+            botaoEmbaralhar.classList.add('desativado');
+            botaoNovato.disabled = true;
+            botaoNovato.classList.add('desativado');
+            botaoExperiente.disabled = true;
+            botaoExperiente.classList.add('desativado');
+            botaoFormando.disabled = true;
+            botaoFormando.classList.add('desativado');
 
-    clearInterval(timerInterval);
+            tabuleiro.style.backgroundImage = `url('img/${dificuldadeAtual}/vitoria.png')`;
+            tabuleiro.style.backgroundSize = 'cover';
 
-tiles.forEach(tile => tile.classList.add('vitoria'));
+            pecas.forEach((peca) => {
+                peca.style.transition = 'opacity 0.5s';
+                peca.style.opacity = '0'
+            })
 
-setTimeout(() => {
-    winMessage.classList.remove('hidden');
+            setTimeout(() => {
+                mensagemVitoria.classList.remove('hidden');
 
-    setTimeout(() => {
-        tiles.forEach(tile => tile.classList.remove('vitoria'));
-    }, 2000); 
-}, 1500); 
-
-}
-
-    }
-
-    function handleTileClick(clickedIndex) {
-        if (!isGameActive) return;
-
-        const diff = Math.abs(clickedIndex - emptyIndex);
-        const sameRow = Math.floor(clickedIndex / gridSize) === Math.floor(emptyIndex / gridSize);
-        const isAdjacent = (diff === 1 && sameRow) || diff === gridSize;
-
-        if (isAdjacent) {
-            tiles[clickedIndex].classList.add('moving');
-
-            const temp = tiles[emptyIndex].dataset.value;
-            tiles[emptyIndex].dataset.value = tiles[clickedIndex].dataset.value;
-            tiles[clickedIndex].dataset.value = temp;
-
-            emptyIndex = clickedIndex;
-            moveCounter++;
-            moveCount.textContent = moveCounter.toString();
-            updateBoard();
+                setTimeout(() => {
+                    pecas.forEach(peca => peca.classList.remove('vitoria'));
+                }, 2000);
+            }, 2000);
         }
     }
 
-    function checkWin() {
-        for (let i = 0; i < totalTiles - 1; i++) {
-            if (tiles[i].dataset.value !== (i + 1).toString()) return false;
+    function clicarPeca(indiceClicado) {
+        if (!jogoAtivo) return;
+
+        const diferenca = Math.abs(indiceClicado - indiceVazio);
+        const mesmaLinha = Math.floor(indiceClicado / tamanhoGrade) === Math.floor(indiceVazio / tamanhoGrade);
+        const adjacente = (diferenca === 1 && mesmaLinha) || diferenca === tamanhoGrade;
+
+        if (adjacente) {
+            pecas[indiceClicado].classList.add('moving');
+
+            const temp = pecas[indiceVazio].dataset.value;
+            pecas[indiceVazio].dataset.value = pecas[indiceClicado].dataset.value;
+            pecas[indiceClicado].dataset.value = temp;
+
+            indiceVazio = indiceClicado;
+            contadorMovimentosTotal++;
+            contadorMovimentos.textContent = contadorMovimentosTotal.toString();
+            atualizarTabuleiro();
         }
-        return tiles[totalTiles - 1].dataset.value === 'empty';
     }
-    shuffleBtn.addEventListener('click', shufflePuzzle);
-    playAgainBtn.addEventListener('click', () => {
-        initPuzzle();
-        shufflePuzzle();
+
+    function verificarVitoria() {
+        for (let i = 0; i < totalPecas - 1; i++) {
+            if (pecas[i].dataset.value !== (i + 1).toString()) return false;
+        }
+        return pecas[totalPecas - 1].dataset.value === 'empty';
+    }
+
+    botaoEmbaralhar.addEventListener('click', embaralharPuzzle);
+    botaoJogarNovamente.addEventListener('click', () => {
+        iniciarPuzzle();
+        embaralharPuzzle();
     });
 
-    setDifficulty('formando');
+    definirDificuldade('novato');
 });
