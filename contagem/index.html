@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contagem</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>Dia de Eros</h1>
+        <div id="contador">
+            <p id="tempo-restante"></p>
+        </div>
+        <button id="teste">Testar</button>
+        <div id="barra">
+            <div id="barra-progresso">
+                <div id="progresso"></div>
+            </div>
+            <p id="texto-barra">Progresso: <span id="numPorcento"></span>%</p>
+        </div>
+        <div id="controleMusica">
+        <button id="iniciarMusica">Iniciar musica</button>
+        <button id="reiniciarMusica">Reiniciar musica</button>
+        </div>
+    </div>
+
+    <div id="fundo" class="hidden"></div>
+
+    <div id="popUp" class="hidden">
+        <p>O Dia de Eros é um evento especial que celebra o amor e a amizade. É uma oportunidade para expressar carinho
+            e gratidão às pessoas queridas.</p>
+        <h2>Eros deseja um feliz dia para você e seu amado!</h2>
+        <button id="fecharPopup">Fechar</button>
+    </div>
+
+    <script>
+        const fim = new Audio('som/musicaFim.mp3');
+        const reiniciarMusica = document.getElementById("reiniciarMusica");
+        const botaoMusica = document.getElementById("iniciarMusica");
+        const musicaFundo = new Audio('som/musicaFundo.mp3')
+        const numPorcento = document.getElementById("numPorcento");
+        const barraProgresso = document.getElementById("barra-progresso");
+        const progresso = document.getElementById("progresso");
+        const textoBarra = document.getElementById("texto-barra");
+        const botaoTeste = document.getElementById("teste");
+        const popUp = document.getElementById("popUp");
+        const fundo = document.getElementById("fundo");
+        const fecharPopup = document.getElementById("fecharPopup");
+
+       botaoMusica.addEventListener("click", () => {
+        fim.pause()
+            if (musicaFundo.paused) {
+                musicaFundo.play().then(() => {
+                    musicaFundo.volume = 1;
+                }).catch(e => {
+                    console.log('Esperando interação do usuário para tocar música.');
+                });
+                botaoMusica.textContent = "Parar música";
+            } else {
+                musicaFundo.pause();
+                botaoMusica.textContent = "Iniciar música";
+            }
+        });
+
+        reiniciarMusica.addEventListener("click", () => {
+            fim.pause();
+            musicaFundo.currentTime = 0;
+            if (musicaFundo.paused) {
+                musicaFundo.play().then(() => {
+                    musicaFundo.volume = 1;
+                }).catch(e => {
+                    console.log('Esperando interação do usuário para tocar música.');
+                });
+                botaoMusica.textContent = "Parar música";
+            }
+        });
+
+        let teste = false;
+        botaoTeste.addEventListener("click", () => {
+            teste = true;
+            atualizarContador();
+        });
+
+        function atualizarContador() {
+            const inicio = new Date(2024, 0, 1);
+            const agora = new Date();
+            const dataAlvo = new Date(2025, 5, 12)
+            const progressoPercentual = Math.min(Math.max((agora - inicio) / (dataAlvo - inicio) * 100, 0), 100);
+            const diferenca = dataAlvo - agora;
+
+            numPorcento.textContent = Math.round(progressoPercentual);
+            progresso.style.width = `${progressoPercentual}%`;
+            if (diferenca <= 0 || teste === true) {
+                fim.currentTime = 0;
+                musicaFundo.pause();
+                fim.play();
+                botaoMusica.textContent = "Iniciar música";
+                popUp.classList.remove("hidden");
+                fundo.classList.remove("hidden");
+                document.getElementById("contador").classList.add("hidden");
+                return;
+            }
+
+            const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
+            const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
+
+            document.getElementById("tempo-restante").textContent =
+                `${String(dias).padStart(2, '0')} dias, ${String(horas).padStart(2, '0')} horas, ${String(minutos).padStart(2, '0')} minutos e ${String(segundos).padStart(2, '0')} segundos.`;
+        }
+
+        fecharPopup.addEventListener("click", () => {
+            popUp.classList.add("hidden");
+            fundo.classList.add("hidden");
+        });
+
+        atualizarContador();
+        const intervalo = setInterval(atualizarContador, 1000);
+    </script>
+</body>
+
+</html>
