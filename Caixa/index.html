@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compras no caixa</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h2>Simulador de caixa</h2>
+    <label
+      >Pesquisar produto:
+      <input
+        type="text"
+        oninput="pesquisar()"
+        id="barraPesquisa"
+        placeholder="Digite o nome do produto"
+      />
+    </label>
+    <br /><br />
+    <label
+      >Produto:
+      <input type="text" id="produto" placeholder="Digite o nome do produto" />
+    </label>
+    <br /><br />
+    <label
+      >Valor (R$)
+      <input type="number" id="valor" placeholder="Digite o valor do produto" />
+    </label>
+    <br /><br />
+    <label
+      >Quantidade:
+      <input type="number" id="quantidade" placeholder="Digite a quantidade" />
+    </label>
+    <br /><br />
+
+    <button onclick="adicionarItem()">Adicionar</button>
+    <button onclick="limparTudo()">Limpar tudo</button>
+    <button onclick="finalizarCompra()">Finalizar compra</button>
+    <br /><br />
+
+    <h3>Itens no carrinho:</h3>
+    <ul id="itensLista"></ul>
+    <h3>Total: R$ <span id="valorTotal">0.00</span></h3>
+
+    <h3>Produtos disponíveis:</h3>
+    <div id="produtos">
+      <div id="divProdutos" class="produtos-container"></div>
+    </div>
+
+    <div id="fundo" class="hidden"></div>
+
+    <div id="popUp" class="hidden">
+      <h3>Seu carrinho possui:</h3>
+      <div id="interna">
+        <ul id="itensListaPopUp"></ul>
+        <h3>Total a pagar:</h3>
+        <span id="valorTotalPopUp">0.00</span>
+        <br><br />
+        <label for="forma-pagamento">Forma de pagamento:</label>
+        <select id="forma-pagamento" name="forma-pagamento">
+          <option value="credito">Cartão de Crédito</option>
+          <option value="debito">Cartão de Débito</option>
+          <option value="pix">PIX</option>
+          <option value="boleto">Boleto Bancário</option>
+          <option value="paypal">PayPal</option>
+          <option value="dinheiro">Dinheiro</option>
+        </select>
+        <br /><br />
+        <button id="aplicarDesconto">Aplicar 5% de desconto</button>
+    <br><br />
+        <h3>Pagamento: <input type="text" id="pagamento" placeholder="0.00"></h3>
+        <h3 id="resultadoPagamento"></h3>
+      </div>
+      <button id="fecharPopup" class="hidden">Fechar</button>
+    </div>
+
+    <script>
+      const listaProdutos = [
+        {
+          id: 1,
+          nome: "💊 Paracetamol 500mg (20 comprimidos)",
+          preco: 15.9,
+          tags: [
+            "analgésico",
+            "antitérmico",
+            "dor",
+            "febre",
+            "remédio",
+            "inflamação",
+            "gripe",
+          ],
+        },
+        {
+          id: 2,
+          nome: "💊 Dipirona Sódica 1g (10 comprimidos)",
+          preco: 9.5,
+          tags: [
+            "analgésico",
+            "antitérmico",
+            "dor",
+            "febre",
+            "remédio",
+            "inflamação",
+          ],
+        },
+        {
+          id: 3,
+          nome: "💊 Ibuprofeno 400mg (20 comprimidos)",
+          preco: 18.7,
+          tags: [
+            "anti-inflamatório",
+            "analgésico",
+            "antitérmico",
+            "dor",
+            "inflamação",
+            "febre",
+            "remédio",
+          ],
+        },
+        {
+          id: 4,
+          nome: "🍊 Vitamina C 1g (30 comprimidos efervescentes)",
+          preco: 25.0,
+          tags: [
+            "vitamina",
+            "imunidade",
+            "gripe",
+            "resfriado",
+            "prevenção",
+            "saúde",
+          ],
+        },
+        {
+          id: 5,
+          nome: "💊 Multivitamínico Completo (60 cápsulas)",
+          preco: 49.9,
+          tags: [
+            "vitamina",
+            "imunidade",
+            "energia",
+            "saúde",
+            "bem-estar",
+            "nutrição",
+          ],
+        },
+        {
+          id: 6,
+          nome: "🧴 Álcool em Gel 70% (1kg)",
+          preco: 23.5,
+          tags: [
+            "higiene",
+            "antisséptico",
+            "mãos",
+            "limpeza",
+            "prevenção",
+            "bactérias",
+            "vírus",
+          ],
+        },
+        {
+          id: 7,
+          nome: "🧴 Hidratante Corporal Neutro (200ml)",
+          preco: 22.9,
+          tags: [
+            "hidratante",
+            "pele",
+            "ressecamento",
+            "cosmético",
+            "cuidado pessoal",
+            "bem-estar",
+          ],
+        },
+        {
+          id: 8,
+          nome: "☀️ Protetor Solar FPS 50 (120ml)",
+          preco: 59.9,
+          tags: [
+            "proteção solar",
+            "pele",
+            "sol",
+            "cosmético",
+            "dermatológico",
+            "prevenção",
+            "queimadura",
+          ],
+        },
+        {
+          id: 9,
+          nome: "🧴 Pomada para Assaduras (Dermatológica)",
+          preco: 17.3,
+          tags: [
+            "pomada",
+            "assadura",
+            "pele",
+            "dermatológico",
+            "cuidado pessoal",
+            "bebê",
+            "hidratação",
+            "regeneração",
+          ],
+        },
+        {
+          id: 10,
+          nome: "🧴 Spray Antisséptico para Ferimentos (50ml)",
+          preco: 14.2,
+          tags: [
+            "antisséptico",
+            "ferimento",
+            "machucado",
+            "corte",
+            "limpeza",
+            "bactérias",
+            "primeiros socorros",
+          ],
+        },
+        {
+          id: 11,
+          nome: "💧 Soro Fisiológico 0,9% (500ml)",
+          preco: 7.8,
+          tags: [
+            "limpeza",
+            "higiene",
+            "nariz",
+            "ferimento",
+            "olhos",
+            "hidratação",
+            "primeiros socorros",
+          ],
+        },
+        {
+          id: 12,
+          nome: "🌡️ Termômetro Digital",
+          preco: 39.9,
+          tags: [
+            "febre",
+            "termômetro",
+            "medição",
+            "saúde",
+            "diagnóstico",
+            "prevenção",
+          ],
+        },
+        {
+          id: 13,
+          nome: "😷 Máscara Cirúrgica (caixa com 50 unidades)",
+          preco: 35.0,
+          tags: [
+            "máscara",
+            "proteção",
+            "prevenção",
+            "higiene",
+            "vírus",
+            "bactérias",
+            "respiratório",
+          ],
+        },
+        {
+          id: 14,
+          nome: "🩹 Esparadrapo Impermeável (10m)",
+          preco: 8.9,
+          tags: [
+            "curativo",
+            "esparadrapo",
+            "ferimento",
+            "machucado",
+            "primeiros socorros",
+            "proteção",
+          ],
+        },
+        {
+          id: 15,
+          nome: "🩹 Curativo Adesivo (caixa com 40 unidades)",
+          preco: 12.0,
+          tags: [
+            "curativo",
+            "ferimento",
+            "corte",
+            "machucado",
+            "proteção",
+            "higiene",
+            "primeiros socorros",
+          ],
+        },
+        {
+          id: 16,
+          nome: "🧴 Shampoo Anticaspa (400ml)",
+          preco: 29.9,
+          tags: [
+            "caspa",
+            "shampoo",
+            "anticaspa",
+            "cabelo",
+            "couro cabeludo",
+            "higiene",
+            "dermatológico",
+          ],
+        },
+        {
+          id: 17,
+          nome: "🧴 Desodorante Roll-on (60ml)",
+          preco: 9.9,
+          tags: [
+            "desodorante",
+            "higiene",
+            "axilas",
+            "odor",
+            "proteção",
+            "cuidado pessoal",
+          ],
+        },
+        {
+          id: 18,
+          nome: "🧼 Sabonete Líquido Antisséptico (250ml)",
+          preco: 16.5,
+          tags: [
+            "sabonete",
+            "antisséptico",
+            "higiene",
+            "pele",
+            "bactérias",
+            "vírus",
+            "limpeza",
+          ],
+        },
+        {
+          id: 19,
+          nome: "💄 Hidratante Labial com FPS",
+          preco: 11.2,
+          tags: [
+            "hidratante",
+            "labial",
+            "lábios",
+            "ressecamento",
+            "sol",
+            "proteção",
+            "dermatológico",
+          ],
+        },
+        {
+          id: 20,
+          nome: "🦟 Repelente de Insetos (100ml)",
+          preco: 24.7,
+          tags: [
+            "repelente",
+            "inseto",
+            "mosquito",
+            "pele",
+            "proteção",
+            "prevenção",
+            "viagem",
+            "campo",
+          ],
+        },
+      ];
+
+      mostrarProdutos(listaProdutos);
+      const interna = document.getElementById("interna");
+      const fecharPopup = document.getElementById("fecharPopup");
+      const itensListaPopUp = document.getElementById("itensListaPopUp");
+      const valorTotalPopUp = document.getElementById("valorTotalPopUp");
+      const popUp = document.getElementById("popUp");
+      const fundo = document.getElementById("fundo");
+      const containerProdutos = document.getElementById("produtos");
+      const barraPesquisa = document.getElementById("barraPesquisa");
+      const aplicarDescontoBtn = document.getElementById("aplicarDesconto");
+        aplicarDescontoBtn.addEventListener("click", () => {
+    if (descontoAplicado) {
+        alert("Desconto já foi aplicado.");
+        return;
+    }
+    
+    // Obtém o valor total atual do popup
+    const totalAtual = parseFloat(valorTotalPopUp.textContent);
+    
+    // Calcula o desconto (5% do total atual)
+    const desconto = totalAtual * 0.05;
+    
+    // Calcula o novo total com desconto
+    const novoTotal = totalAtual - desconto;
+    
+    // Atualiza o valor exibido no popup
+    valorTotalPopUp.textContent = novoTotal.toFixed(2);
+    
+    // Atualiza a variável global valorTotal (opcional, dependendo da sua necessidade)
+    valorTotal = novoTotal;
+    
+    descontoAplicado = true;
+    
+    // Mostra mensagem com o valor do desconto e novo total
+    alert(`Desconto de R$ ${desconto.toFixed(2)} aplicado!\nNovo total: R$ ${novoTotal.toFixed(2)}`);
+    
+    // Atualiza o cálculo do pagamento/troco se já houver valor digitado
+    const pagamentoInput = document.getElementById('pagamento');
+    if (pagamentoInput.value) {
+        const event = new Event('input');
+        pagamentoInput.dispatchEvent(event);
+    }
+});
+      let descontoAplicado = false;
+      let carrinho = [];
+      let total = 0;
+
+      let itens = [];
+      let valorTotal = 0;
+
+      function mostrarProdutos(produtos) {
+        const container = document.getElementById("divProdutos");
+        if (!container) return;
+        container.innerHTML = "";
+        produtos.forEach((produto) => {
+          const div = document.createElement("div");
+          div.className = "produto";
+          div.innerHTML = `
+          <button class="adicionar" onclick="adicionarItemImg('${
+            produto.nome
+          }', ${produto.preco})">
+      <h4>${produto.nome}</h4>
+      <img src="img/${produto.id}.webp" class="imagem" alt="${produto.nome}" />
+      <p>R$ ${produto.preco.toFixed(2)}</p>
+      Adicionar</button>
+    `;
+          container.appendChild(div);
+        });
+      }
+
+      document.getElementById('pagamento').addEventListener('input', function() {
+    const pagamento = parseFloat(this.value.replace(',', '.')) || 0;
+    const troco = pagamento - total;
+
+    let mensagem = '';
+
+    if (troco < 0) {
+        mensagem = `Faltam R$ ${Math.abs(troco).toFixed(2)}`;
+    } else {
+        mensagem = `Troco: R$ ${troco.toFixed(2)}`;
+    }
+
+    exibirResultado(mensagem);
+});
+
+function exibirResultado(mensagem) {
+    let resultado = document.getElementById('resultadoPagamento');
+    if (!resultado) {
+        resultado = document.createElement('h3');
+        resultado.id = 'resultadoPagamento';
+        document.getElementById('interna').appendChild(resultado);
+    }
+    resultado.innerText = mensagem;
+}
+
+      function adicionarItemImg(nome, preco) {
+        const produto = nome.trim();
+        const valor = parseFloat(preco);
+        const quantidade = 1;
+
+        if (produto && !isNaN(valor)) {
+          const index = itens.findIndex((item) => item.produto === produto);
+
+          if (index !== -1) {
+            itens[index].quantidade += quantidade;
+          } else {
+            const item = { produto, valor, quantidade };
+            itens.push(item);
+          }
+
+          atualizarLista();
+          calcularTotal();
+        } else {
+          alert("Por favor, preencha todos os campos corretamente.");
+        }
+      }
+      function adicionarItem() {
+        const produto = document.getElementById("produto").value.trim();
+        const valor = parseFloat(document.getElementById("valor").value);
+        const quantidade = parseInt(
+          document.getElementById("quantidade").value
+        );
+
+        if (produto && !isNaN(valor) && !isNaN(quantidade) && quantidade > 0) {
+          const item = { produto, valor, quantidade };
+          itens.push(item);
+          atualizarLista();
+          calcularTotal();
+          limparCampos();
+        } else {
+          alert("Por favor, preencha todos os campos corretamente.");
+        }
+      }
+
+      function atualizarLista() {
+        const lista = document.getElementById("itensLista");
+        lista.innerHTML = "";
+        itens.forEach((item, index) => {
+          const li = document.createElement("li");
+          li.textContent = `${item.quantidade}x ${item.produto} - R$ ${(
+            item.valor * item.quantidade
+          ).toFixed(2)}`;
+
+          const botaoRemover = document.createElement("button");
+          botaoRemover.textContent = "Remover";
+          botaoRemover.onclick = () => removerItem(index);
+
+          const botaoAdicionar = document.createElement("button");
+          botaoAdicionar.textContent = "Adicionar unidade";
+          botaoAdicionar.onclick = () => {
+            item.quantidade++;
+
+            atualizarLista();
+            calcularTotal();
+          };
+        li.appendChild(botaoRemover);
+          li.appendChild(botaoAdicionar);
+          lista.appendChild(li);
+        });
+      }
+
+      function removerItem(index) {
+        itens.splice(index, 1);
+        atualizarLista();
+        calcularTotal();
+      }
+
+      function calcularTotal() {
+        valorTotal = itens.reduce(
+          (acc, item) => acc + item.valor * item.quantidade,
+          0
+        );
+        document.getElementById("valorTotal").textContent =
+          valorTotal.toFixed(2);
+      }
+
+      function limparCampos() {
+        document.getElementById("produto").value = "";
+        document.getElementById("valor").value = "";
+        document.getElementById("quantidade").value = "";
+      }
+
+      function limparTudo() {
+        itens = [];
+        atualizarLista();
+        calcularTotal();
+      }
+
+      function finalizarCompra() {
+        if (itens.length === 0) {
+          alert("Seu carrinho está vazio.");
+          return;
+        }
+        popUp.classList.remove("hidden");
+        fundo.classList.remove("hidden");
+        itensListaPopUp.innerHTML = "";
+        itens.forEach((item) => {
+          const li = document.createElement("li");
+          li.textContent = `${item.quantidade}x ${item.produto} - R$ ${(
+            item.valor * item.quantidade
+          ).toFixed(2)}`;
+          itensListaPopUp.appendChild(li);
+        });
+        valorTotalPopUp.textContent = valorTotal.toFixed(2);
+        
+        document.getElementById('pagamento').addEventListener('input', function() {
+          const pagamento = parseFloat(this.value.replace(',', '.')) || 0;
+          const total = parseFloat(valorTotalPopUp.textContent);
+          const troco = pagamento - total;
+
+          let mensagem = '';
+
+          if (troco < 0) {
+              mensagem = `Faltam R$ ${Math.abs(troco).toFixed(2)}`;
+              fecharPopup.classList.add("hidden");
+              fecharPopup.disabled = true;
+          } else {
+              mensagem = `Troco: R$ ${troco.toFixed(2)}`;
+                fecharPopup.classList.remove("hidden");
+                fecharPopup.disabled = false;
+          }
+
+          document.getElementById('resultadoPagamento').innerText = mensagem;
+        });
+        
+        limparTudo();
+      }
+      fecharPopup.addEventListener("click", () => {
+        descontoAplicado = false;
+        itens = [];
+        valorTotal = 0;
+        atualizarLista();
+        calcularTotal();
+        popUp.classList.add("hidden");
+        fundo.classList.add("hidden");
+      });
+
+      function pesquisar() {
+        const busca = barraPesquisa.value.toLowerCase();
+        const produtosFiltrados = listaProdutos.filter(
+          (produto) =>
+            produto.nome.toLowerCase().includes(busca) ||
+            produto.tags.some((tag) => tag.toLowerCase().includes(busca))
+        );
+        mostrarProdutos(produtosFiltrados);
+      }
+    </script>
+  </body>
+</html>
