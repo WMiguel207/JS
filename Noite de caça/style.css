@@ -1,0 +1,136 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    color: #f0f0f0;
+    font-family: 'Georgia', serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('img/wp.webp');
+    background-size: cover;
+    background-position: center;
+    filter: blur(10px);
+    z-index: -1;
+}
+
+.container-jogo {
+    background-color: rgba(34, 34, 51, 0.9);
+    border: 2px solid #f0f0f0;
+    border-radius: 20px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    position: relative;
+    z-index: 1;
+}
+
+h1 {
+    margin-bottom: 10px;
+    font-size: 2.5em;
+}
+
+.subtitulo {
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.groupo-input {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="number"] {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 50%;
+    font-size: 1em;
+    background-color: #333;
+    color: white;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background-color: #4caf50;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+button:disabled {
+    background-color: #777;
+    cursor: not-allowed;
+}
+input:disabled {
+    background-color: #555;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+#menssagem {
+    margin: 15px 0;
+    font-size: 1.1em;
+}
+
+.historico {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.historico ul {
+    list-style: none;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.historico li {
+    margin: 5px 0;
+}
+
+.tentativas {
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+#botao-reiniciar {
+    background-color: #2196f3;
+}
+
+#botao-reiniciar:hover {
+    background-color: #1976d2;
+}
