@@ -1,145 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Shopping Morto</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #1c1c1c;
-      color: #f0f0f0;
-      padding: 20px;
-    }
-    .escolha {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      background-color: #333;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    .escolha:hover {
-      background-color: #555;
-    }
-    #historia {
-      margin-bottom: 20px;
-      font-size: 18px;
-    }
-  </style>
-</head>
-<body>
-  <h1>Shopping Morto - Jogo</h1>
-  <div id="historia"></div>
-  <div id="escolhas"></div>
-
-  <script>
-    const historiaElement = document.getElementById("historia");
-    const escolhasElement = document.getElementById("escolhas");
-
-    const cenas = {
-      inicio: {
-        texto: "Você está preso em um shopping. Sirenes soam e gritos ecoam. Os zumbis invadiram.<br> O que você faz?",
-        escolhas: [
-          { texto: "🏃‍♂️ Correr para a loja de esportes", proximaCena: "esportes" },
-          { texto: "🛒 Esconder-se na praça de alimentação", proximaCena: "praca" }
-        ]
-      },
-      esportes: {
-        texto: "Você pega um taco de beisebol e tênis novos. De repente, um zumbi aparece pela porta!",
-        escolhas: [
-          { texto: "⚾ Atacar o zumbi", proximaCena: "atacar" },
-          { texto: "🚪 Correr para a escada de incêndio", proximaCena: "escada" }
-        ]
-      },
-      praca: {
-        texto: "Você se esconde atrás de uma lanchonete. Um grupo de sobreviventes aparece.",
-        escolhas: [
-          { texto: "🤝 Juntar-se a eles", proximaCena: "grupo" },
-          { texto: "🙅‍♂️ Ficar sozinho", proximaCena: "sozinho" }
-        ]
-      },
-      atacar: {
-        texto: "Você derrota o zumbi, mas chama atenção de outros! ⚠️",
-        escolhas: [
-          { texto: "🏃 Fugir para a escada de incêndio", proximaCena: "escada" },
-          { texto: "🔒 Trancar-se na loja", proximaCena: "preso" }
-        ]
-      },
-      escada: {
-        texto: "Você sobe correndo. No topo, encontra a saída trancada. Uma figura misteriosa aparece com uma chave.",
-        escolhas: [
-          { texto: "👤 Confiar na pessoa", proximaCena: "confia" },
-          { texto: "🔫 Ameaçar e pegar a chave à força", proximaCena: "forca" }
-        ]
-      },
-      preso: {
-        texto: "Você se tranca, mas não há saída. Os zumbis quebram a vitrine. 🧟‍♂️💥",
-        escolhas: [],
-        final: "☠️ Final Ruim: preso e devorado."
-      },
-      grupo: {
-        texto: "O grupo te aceita. Juntos, planejam uma fuga pelos dutos de ar.",
-        escolhas: [
-          { texto: "🚷 Ir na frente", proximaCena: "duto_morte" },
-          { texto: "👣 Deixar outro ir primeiro", proximaCena: "duto_fuga" }
-        ]
-      },
-      sozinho: {
-        texto: "Você tenta se esgueirar até a saída sozinho, mas cai em uma armadilha de outro sobrevivente.",
-        escolhas: [],
-        final: "☠️ Final Ruim: morto por humanos paranoicos."
-      },
-      confia: {
-        texto: "A pessoa abre a porta e vocês escapam para o telhado, onde um helicóptero aguarda.",
-        escolhas: [],
-        final: "🚁 Final Bom: fuga de helicóptero bem-sucedida!"
-      },
-      forca: {
-        texto: "Você consegue a chave, mas a figura misteriosa atira em você. Você abre a porta ferido.",
-        escolhas: [],
-        final: "🩸 Final Neutro: escapou, mas gravemente ferido."
-      },
-      duto_morte: {
-        texto: "O duto cede com seu peso. Você cai no meio de zumbis famintos.",
-        escolhas: [],
-        final: "☠️ Final Ruim: morte dolorosa nos dutos."
-      },
-      duto_fuga: {
-        texto: "O outro sobrevive, e te puxa com segurança. Vocês escapam pelos fundos do shopping.",
-        escolhas: [],
-        final: "🚪 Final Bom: fuga bem-sucedida com aliados."
+  <head>
+    <meta charset="UTF-8" />
+    <title>Shopping Morto</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #1c1c1c;
+        color: #f0f0f0;
+        padding: 20px;
       }
-    };
+      .escolha {
+        display: block;
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #333;
+        border: none;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      .escolha:hover {
+        background-color: #555;
+      }
+      #historia {
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Shopping Morto - Jogo</h1>
+    <div id="historia"></div>
+    <div id="escolhas"></div>
 
-    function mostrarCena(key) {
-      const scene = cenas[key];
-      historiaElement.innerHTML = scene.texto;
-      escolhasElement.innerHTML = "";
+    <script>
+      const historiaElement = document.getElementById("historia");
+      const escolhasElement = document.getElementById("escolhas");
 
-      if (scene.final) {
-        const finalizarTexto = document.createElement("p");
-        finalizarTexto.innerHTML = `<strong>${scene.final}</strong>`;
-        escolhasElement.appendChild(finalizarTexto);
+      const cenas = {
+        inicio: {
+          texto:
+            "Você está preso em um shopping. Sirenes soam e gritos ecoam. Os zumbis invadiram.<br> O que você faz?",
+          escolhas: [
+            {
+              texto: "🏃‍♂️ Correr para a loja de esportes",
+              proximaCena: "esportes",
+            },
+            {
+              texto: "🛒 Esconder-se na praça de alimentação",
+              proximaCena: "praca",
+            },
+          ],
+        },
+        esportes: {
+          texto:
+            "Você pega um taco de beisebol e tênis novos. De repente, um zumbi aparece pela porta!",
+          escolhas: [
+            { texto: "⚾ Atacar o zumbi", proximaCena: "atacar" },
+            {
+              texto: "🚪 Correr para a escada de incêndio",
+              proximaCena: "escada",
+            },
+          ],
+        },
+        praca: {
+          texto:
+            "Você se esconde atrás de uma lanchonete. Um grupo de sobreviventes aparece.",
+          escolhas: [
+            { texto: "🤝 Juntar-se a eles", proximaCena: "grupo" },
+            { texto: "🙅‍♂️ Ficar sozinho", proximaCena: "sozinho" },
+          ],
+        },
+        atacar: {
+          texto: "Você derrota o zumbi, mas chama atenção de outros! ⚠️",
+          escolhas: [
+            {
+              texto: "🏃 Fugir para a escada de incêndio",
+              proximaCena: "escada",
+            },
+            { texto: "🔒 Trancar-se na loja", proximaCena: "preso" },
+          ],
+        },
+        escada: {
+          texto:
+            "Você sobe correndo. No topo, encontra a saída trancada. Uma figura misteriosa aparece com uma chave.",
+          escolhas: [
+            { texto: "👤 Confiar na pessoa", proximaCena: "confia" },
+            {
+              texto: "🔫 Ameaçar e pegar a chave à força",
+              proximaCena: "forca",
+            },
+          ],
+        },
+        preso: {
+          texto:
+            "Você se tranca, mas não há saída. Os zumbis quebram a vitrine. 🧟‍♂️💥",
+          escolhas: [],
+          final: "☠️ Final Ruim: preso e devorado.",
+        },
+        grupo: {
+          texto:
+            "O grupo te aceita. Juntos, planejam uma fuga pelos dutos de ar.",
+          escolhas: [
+            { texto: "🚷 Ir na frente", proximaCena: "duto_morte" },
+            { texto: "👣 Deixar outro ir primeiro", proximaCena: "duto_fuga" },
+          ],
+        },
+        sozinho: {
+          texto:
+            "Você tenta se esgueirar até a saída sozinho, mas cai em uma armadilha de outro sobrevivente.",
+          escolhas: [],
+          final: "☠️ Final Ruim: morto por humanos paranoicos.",
+        },
+        confia: {
+          texto:
+            "A pessoa abre a porta e vocês escapam para o telhado, onde um helicóptero aguarda.",
+          escolhas: [],
+          final: "🚁 Final Bom: fuga de helicóptero bem-sucedida!",
+        },
+        forca: {
+          texto:
+            "Você consegue a chave, mas a figura misteriosa atira em você. Você abre a porta ferido.",
+          escolhas: [],
+          final: "🩸 Final Neutro: escapou, mas gravemente ferido.",
+        },
+        duto_morte: {
+          texto:
+            "O duto cede com seu peso. Você cai no meio de zumbis famintos.",
+          escolhas: [],
+          final: "☠️ Final Ruim: morte dolorosa nos dutos.",
+        },
+        duto_fuga: {
+          texto:
+            "O outro sobrevive, e te puxa com segurança. Vocês escapam pelos fundos do shopping.",
+          escolhas: [],
+          final: "🚪 Final Bom: fuga bem-sucedida com aliados.",
+        },
+      };
 
-        const restartBtn = document.createElement("button");
-        restartBtn.className = "escolha";
-        restartBtn.textoContent = "🔁 Jogar Novamente";
-        restartBtn.onclick = () => mostrarCena("inicio");
-        escolhasElement.appendChild(restartBtn);
-        return;
+      function mostrarCena(key) {
+        const scene = cenas[key];
+        historiaElement.innerHTML = scene.texto;
+        escolhasElement.innerHTML = "";
+
+        if (scene.final) {
+          const finalizarTexto = document.createElement("p");
+          finalizarTexto.innerHTML = `<strong>${scene.final}</strong>`;
+          escolhasElement.appendChild(finalizarTexto);
+
+          const restartBtn = document.createElement("button");
+          restartBtn.className = "escolha";
+          restartBtn.textContent = "🔁 Jogar Novamente";
+          restartBtn.onclick = () => mostrarCena("inicio");
+          escolhasElement.appendChild(restartBtn);
+          return;
+        }
+
+        scene.escolhas.forEach((escolha) => {
+          const btn = document.createElement("button");
+          btn.className = "escolha";
+          btn.textContent = escolha.texto;
+          btn.onclick = () => mostrarCena(escolha.proximaCena);
+          escolhasElement.appendChild(btn);
+        });
       }
 
-      scene.escolhas.forEach(escolha => {
-        const btn = document.createElement("button");
-        btn.className = "escolha";
-        btn.textoContent = escolha.texto;
-        btn.onclick = () => mostrarCena(escolha.proximaCena);
-        escolhasElement.appendChild(btn);
-      });
-    }
-    mostrarCena("inicio");
-  </script>
-</body>
+      mostrarCena("inicio");
+    </script>
+  </body>
 </html>
