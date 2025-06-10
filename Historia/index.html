@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Shopping Morto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1c1c1c;
+      color: #f0f0f0;
+      padding: 20px;
+    }
+    .choice {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #333;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .choice:hover {
+      background-color: #555;
+    }
+    #story {
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shopping Morto - Jogo</h1>
+  <div id="story"></div>
+  <div id="choices"></div>
+
+  <script>
+    const storyElement = document.getElementById("story");
+    const choicesElement = document.getElementById("choices");
+
+    const scenes = {
+      inicio: {
+        text: "Você está preso em um shopping. Sirenes soam e gritos ecoam. Os zumbis invadiram.<br> O que você faz?",
+        choices: [
+          { text: "🏃‍♂️ Correr para a loja de esportes", next: "esportes" },
+          { text: "🛒 Esconder-se na praça de alimentação", next: "praca" }
+        ]
+      },
+      esportes: {
+        text: "Você pega um taco de beisebol e tênis novos. De repente, um zumbi aparece pela porta!",
+        choices: [
+          { text: "⚾ Atacar o zumbi", next: "atacar" },
+          { text: "🚪 Correr para a escada de incêndio", next: "escada" }
+        ]
+      },
+      praca: {
+        text: "Você se esconde atrás de uma lanchonete. Um grupo de sobreviventes aparece.",
+        choices: [
+          { text: "🤝 Juntar-se a eles", next: "grupo" },
+          { text: "🙅‍♂️ Ficar sozinho", next: "sozinho" }
+        ]
+      },
+      atacar: {
+        text: "Você derrota o zumbi, mas chama atenção de outros! ⚠️",
+        choices: [
+          { text: "🏃 Fugir para a escada de incêndio", next: "escada" },
+          { text: "🔒 Trancar-se na loja", next: "preso" }
+        ]
+      },
+      escada: {
+        text: "Você sobe correndo. No topo, encontra a saída trancada. Uma figura misteriosa aparece com uma chave.",
+        choices: [
+          { text: "👤 Confiar na pessoa", next: "confia" },
+          { text: "🔫 Ameaçar e pegar a chave à força", next: "forca" }
+        ]
+      },
+      preso: {
+        text: "Você se tranca, mas não há saída. Os zumbis quebram a vitrine. 🧟‍♂️💥",
+        choices: [],
+        ending: "☠️ Final Ruim: preso e devorado."
+      },
+      grupo: {
+        text: "O grupo te aceita. Juntos, planejam uma fuga pelos dutos de ar.",
+        choices: [
+          { text: "🚷 Ir na frente", next: "duto_morte" },
+          { text: "👣 Deixar outro ir primeiro", next: "duto_fuga" }
+        ]
+      },
+      sozinho: {
+        text: "Você tenta se esgueirar até a saída sozinho, mas cai em uma armadilha de outro sobrevivente.",
+        choices: [],
+        ending: "☠️ Final Ruim: morto por humanos paranoicos."
+      },
+      confia: {
+        text: "A pessoa abre a porta e vocês escapam para o telhado, onde um helicóptero aguarda.",
+        choices: [],
+        ending: "🚁 Final Bom: fuga de helicóptero bem-sucedida!"
+      },
+      forca: {
+        text: "Você consegue a chave, mas a figura misteriosa atira em você. Você abre a porta ferido.",
+        choices: [],
+        ending: "🩸 Final Neutro: escapou, mas gravemente ferido."
+      },
+      duto_morte: {
+        text: "O duto cede com seu peso. Você cai no meio de zumbis famintos.",
+        choices: [],
+        ending: "☠️ Final Ruim: morte dolorosa nos dutos."
+      },
+      duto_fuga: {
+        text: "O outro sobrevive, e te puxa com segurança. Vocês escapam pelos fundos do shopping.",
+        choices: [],
+        ending: "🚪 Final Bom: fuga bem-sucedida com aliados."
+      }
+    };
+
+    function showScene(key) {
+      const scene = scenes[key];
+      storyElement.innerHTML = scene.text;
+      choicesElement.innerHTML = "";
+
+      if (scene.ending) {
+        const endText = document.createElement("p");
+        endText.innerHTML = `<strong>${scene.ending}</strong>`;
+        choicesElement.appendChild(endText);
+
+        const restartBtn = document.createElement("button");
+        restartBtn.className = "choice";
+        restartBtn.textContent = "🔁 Jogar Novamente";
+        restartBtn.onclick = () => showScene("inicio");
+        choicesElement.appendChild(restartBtn);
+        return;
+      }
+
+      scene.choices.forEach(choice => {
+        const btn = document.createElement("button");
+        btn.className = "choice";
+        btn.textContent = choice.text;
+        btn.onclick = () => showScene(choice.next);
+        choicesElement.appendChild(btn);
+      });
+    }
+    showScene("inicio");
+  </script>
+</body>
+</html>
