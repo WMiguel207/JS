@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cartões Interativos</title>
+    <style>
+      body {
+        background-color: #222;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        gap: 20px;
+        padding: 20px;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        width: 250px;
+        height: 180px;
+        perspective: 1000px;
+      }
+
+      .cartao {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s;
+        cursor: pointer;
+      }
+
+      .cartao.Virado {
+        transform: rotateY(180deg);
+      }
+
+      .frente,.verso {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        border-radius: 15px;
+        backface-visibility: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 15px;
+        box-sizing: border-box;
+        text-align: center;
+        color: #fff;
+        font-size: 20px;
+      }
+
+      .verso {
+        transform: rotateY(180deg);
+        font-size: 16px;
+        color: #000;
+      }
+
+      .aniversario .frente {
+        background: #ff69b4;
+      }
+      .aniversario .verso {
+        background: #fff0f5;
+      }
+
+      .natal .frente {
+        background: #228b22;
+      }
+      .natal .verso {
+        background: #f5fffa;
+      }
+
+      .maes .frente {
+        background: #ffb6c1;
+      }
+      .maes .verso {
+        background: #ffe4e1;
+      }
+
+      .namorados .frente {
+        background: #c71585;
+      }
+      .namorados .verso {
+        background: #fff0f5;
+      }
+
+      .anonovo .frente {
+        background: #ffd700;
+        color: #000;
+      }
+      .anonovo .verso {
+        background: #fffacd;
+      }
+
+      .pascoa .frente {
+        background: #ffdead;
+        color: #000;
+      }
+      .pascoa .verso {
+        background: #fff5e1;
+      }
+
+      .professor .frente {
+        background: #4682b4;
+      }
+      .professor .verso {
+        background: #e6f0fa;
+      }
+
+      .desculpas .frente {
+        background: #a9a9a9;
+      }
+      .desculpas .verso {
+        background: #f0f0f0;
+      }
+
+      .motivacional .frente {
+        background: #ffa500;
+      }
+      .motivacional .verso {
+        background: #fff8dc;
+      }
+
+      .junina .frente {
+        background: #8b4513;
+      }
+      .junina .verso {
+        background: #fff0dc;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container aniversario">
+      <div class="cartao" >
+        <div class="frente">🎉 Parabens!</div>
+        <div class="verso">
+          Que seu dia seja repleto de alegria, amor e muitos presentes! 🎂🎁
+        </div>
+      </div>
+    </div>
+
+    <div class="container natal">
+      <div class="cartao">
+        <div class="frente">🎄 Feliz Natal!</div>
+        <div class="verso">
+          Desejo muita paz, amor e união neste Natal mágico! 🎅✨
+        </div>
+      </div>
+    </div>
+
+    <div class="container maes">
+      <div class="cartao">
+        <div class="frente">💐 Dia das Mães</div>
+        <div class="verso">
+          Obrigado por todo seu amor, cuidado e força. Te amo, mãe! ❤️
+        </div>
+      </div>
+    </div>
+
+    <div class="container namorados">
+      <div class="cartao">
+        <div class="frente">💘 Dia dos Namorados</div>
+        <div class="verso">
+          Você é meu amor, meu apoio e meu melhor amigo. Te amo! 😘
+        </div>
+      </div>
+    </div>
+
+    <div class="container anonovo">
+      <div class="cartao">
+        <div class="frente">🎆 Feliz Ano Novo</div>
+        <div class="verso">
+          Que o novo ano traga muitas conquistas, saúde e felicidade! 🎇🥂
+        </div>
+      </div>
+    </div>
+
+    <div class="container pascoa">
+      <div class="cartao">
+        <div class="frente">🐰 Feliz Páscoa</div>
+        <div class="verso">
+          Que o espírito da Páscoa renove sua fé e esperança. 🥚🍫
+        </div>
+      </div>
+    </div>
+
+    <div class="container professor">
+      <div class="cartao">
+        <div class="frente">📚 Dia do Professor</div>
+        <div class="verso">
+          Obrigado por compartilhar sabedoria e inspiração. 👩‍🏫❤️
+        </div>
+      </div>
+    </div>
+
+    <div class="container desculpas">
+      <div class="cartao">
+        <div class="frente">😔 Desculpa</div>
+        <div class="verso">
+          Sei que errei. Espero que possamos conversar e superar isso. 🙏
+        </div>
+      </div>
+    </div>
+
+    <div class="container motivacional">
+      <div class="cartao">
+        <div class="frente">💪 Você Consegue!</div>
+        <div class="verso">
+          Acredite em si mesmo. Você é mais forte do que imagina! 🚀
+        </div>
+      </div>
+    </div>
+
+    <div class="container junina">
+      <div class="cartao">
+        <div class="frente">🎉 Festa Junina</div>
+        <div class="verso">
+          Vamos pular fogueira, comer canjica e dançar quadrilha! 🌽🔥
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.querySelectorAll(".cartao").forEach((cartao) => {
+        cartao.addEventListener("click", () => {
+          cartao.classList.toggle("Virado");
+        });
+      });
+    </script>
+  </body>
+</html>
