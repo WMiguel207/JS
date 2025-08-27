@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisão 3</title>
+</head>
+<body id="body">
+    <div id="tela">
+    <p id="msg">Olá</p>
+    <button onclick="trocarTexto()">Trocar texto</button>
+    <button onclick="trocarFundo()">Trocar cor de fundo</button>
+    <ul id="minhaLista">
+    <li>Item inicial 1</li>
+    <li>Item inicial 2</li>
+  </ul>
+
+  <button onclick="adicionarItem()">Adicionar Item</button>
+    
+    <p id="apagar">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel, nemo quae? Magni dolores unde tenetur repudiandae recusandae. Sequi eum modi, officiis, ipsum eaque obcaecati, officia minima minus qui illum voluptate!</p>
+    <button onclick="remove()" id="apagar-botao">Remover paragrafo</button>
+    <h1 id="tituloMudar">Me altere!</h1>
+    <p id="textoMudar">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio minus ipsam recusandae odio deleniti soluta, necessitatibus blanditiis? Impedit asperiores voluptas neque aperiam, cum veritatis tempora eveniet nulla vitae deleniti aliquid.</p>
+    <button onclick="mudarTexto()">Mudar texto</button>
+    <br><br>
+    <label>Digite algo:</label>
+    <input type="text" id="nome" oninput="mostrarTexto()"><br>Você digitou: <p id="resposta"></p>
+
+    <button id="caixa" onmouseover="mudarBotao()" onmouseout="botaoOriginal()">Passe o cursor</button>
+</div>
+
+<button ondblclick="esconder()">Clique ;)</button>
+
+<button onclick="randomSize()">Clique ;D</button>
+    <script src="script.js"></script>
+</body>
+</html>
