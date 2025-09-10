@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong</title>
+</head>
+
+<body style="display: flex; justify-content: center; align-items: center; align-content: center;">
+    <canvas id="canva" width="800" height="400" style="border: 2px solid black;"></canvas>
+    <div style="display: flex; flex-direction: column;">
+    <h1 style="display: flex; justify-content: center; align-items: center;">Batidas: <p id="batidas">0</p></h1>
+    <h1 style="display: flex; justify-content: center; align-items: center;">Recorde: <p id="recorde">0</p></h1>
+    <h1 style="display: flex; justify-content: center; align-items: center;">Jogo:<p id="resets">0</p></h1>
+    </div>
+    <script>
+        const canva = document.getElementById("canva")
+        const ctx = canva.getContext("2d")
+        const recordeContainer = document.getElementById("recorde")
+        const batidasConteiner = document.getElementById("batidas") 
+        const resetsContador = document.getElementById("resets")
+
+        let recorde = 0
+        let batidas = 0
+        let reset = 0
+        let jogoAtivo = false
+        let x = canva.width / 2
+        let y = canva.height / 2
+        let dx = 3
+        let dy = -3
+        let raio = 10
+        let raqueteAltura = 10
+        let raqueteLargura = 75
+        let raqueteX = (canva.width - raqueteLargura) / 2
+
+        let teclaDireita = false
+        let teclaEsquerda = false
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "ArrowRight") {
+                teclaDireita = true
+            } else if (e.key === "ArrowLeft") {
+                teclaEsquerda = true
+            }
+        })
+
+        document.addEventListener("keyup", function (e) {
+            if (e.key === "ArrowRight") {
+                teclaDireita = false
+            } else if (e.key === "ArrowLeft") {
+                teclaEsquerda = false
+            }
+        })
+
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" && jogoAtivo === false) {
+                desenhar()
+                jogoAtivo = true
+                reset++
+                resetsContador.innerText = reset
+            }
+        })
+        function desenharBola() {
+            ctx.beginPath()
+            ctx.arc(x, y, raio, 0, Math.PI * 2)
+            ctx.fillStyle = "red"
+            ctx.fill()
+            ctx.closePath()
+        }
+
+        function desenharRaquete() {
+            ctx.beginPath()
+            ctx.rect(raqueteX, canva.height - raqueteAltura, raqueteLargura, raqueteAltura)
+            ctx.fillStyle = "blue"
+            ctx.fill()
+            ctx.closePath()
+        }
+
+        function desenhar() {
+            ctx.clearRect(0, 0, canva.width, canva.height)
+            desenharBola()
+            desenharRaquete()
+
+            x += dx
+            y += dy
+
+            if (x + dx > canva.width - raio || x + dx < raio) {
+                dx = -dx
+            }
+            if(y +dy < raio){
+                dy = -dy
+            }else if(y+dy > canva.height - raio){
+            if (x > raqueteX && x < raqueteX + raqueteLargura){
+                batidas++
+                batidasConteiner.innerText = batidas
+
+                dy = -dy
+            } else if (y + dy > canva.height - raio){
+                if (batidas>recorde){
+                    recorde = batidas
+                    recordeContainer.innerText = recorde
+                }
+                alert("Game Over!")
+                jogoAtivo = false
+                teclaDireita = false
+                teclaEsquerda = false
+                cancelAnimationFrame(desenhar)
+                batidas = 0
+                batidasConteiner.innerText = "0"
+                x = canva.width / 2
+                y = canva.height / 2
+                dx = 3
+                dy = -3
+                raqueteX = canva.width/2
+                return
+            }
+        }
+
+            if (teclaDireita && raqueteX < canva.width - raqueteLargura) {
+                raqueteX += 10
+            } else if (teclaEsquerda && raqueteX > 0) {
+                raqueteX -= 10
+            }
+
+            x += dx
+            y += dy
+
+            requestAnimationFrame(desenhar)
+        }
+
+    </script>
+</body>
+
+</html>
