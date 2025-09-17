@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Exercicios</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            text-align: center;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            font-family: Arial, sans-serif;
+        }
+
+        .paragrafoPX {
+            width: 300px;
+            font-size: 20px;
+            border: 2px solid black;
+            padding: 10px;
+        }
+
+        .pai {
+            max-width: 400px;
+            font-size: 10px;
+            border: 2px solid black;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .paragrafoEM {
+            font-size: 2em;
+            padding: 10px;
+        }
+
+        .rem-box {
+            font-size: 2rem;
+            border: 2px solid black;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border: 2px solid black;
+            border-radius: 25px;
+        }
+
+        .ex1,
+        .ex2,
+        .ex3,
+        .ex4 {
+            display: none;
+        }
+
+        .fixa {
+            width: 300px;
+            border: 2px solid black;
+        }
+
+        .relativa {
+            width: 100%;
+            border: 2px solid black;
+        }
+
+        .ex3 img {
+            border-radius: 100%;
+            max-width: 600px;
+            border: 2px solid black;
+        }
+
+        .exp {
+            width: 500px;
+            text-align: justify;
+        }
+
+        .txt {
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .secao {
+            flex: 1;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .home {
+            color: black;
+        }
+
+        .sobre {
+            color: black;
+        }
+
+        .contato {
+            color: black;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                background-color: rgb(0, 0, 0);
+                color: white;
+            }
+
+            .ex3 img {
+                max-width: 100px;
+            }
+
+            .nome {
+                font-size: 15px;
+            }
+
+            .txt {
+                font-size: 10px;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .home {
+                color: white;
+            }
+
+            .sobre {
+                color: white;
+            }
+
+            .contato {
+                color: white;
+            }
+        }
+
+        @media (min-width: 601px) and (max-width: 1024px) {
+            body {
+                background-color: rgb(100, 100, 100);
+                color: white;
+            }
+
+            .ex3 img {
+                max-width: 200px;
+            }
+
+            .nome {
+                font-size: 20px;
+            }
+
+            .txt {
+                font-size: 15px;
+            }
+
+            .home {
+                color: white;
+            }
+
+            .sobre {
+                color: white;
+            }
+
+            .contato {
+                color: white;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button id="btn1" onclick="ex1()">Exercicio 1: Mostrar</button>
+    <div class="ex1">
+        <p class="exp">No Ex.1, os três paragrafos tem medidas diferentes, sendo respectivamente px (Valor fixo
+            independente), em (Valor dependente do elemento-pai) e rem (Valor dependente do HTML)</p>
+        <h1>px</h1>
+        <p class="paragrafoPX">Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus necessitatibus mollitia
+            exercitationem repudiandae. Iste cupiditate, libero nemo alias odio nesciunt mollitia minima. Culpa maxime
+            dignissimos explicabo totam dolorem, sunt obcaecati.
+        </p>
+        <h1>em</h1>
+        <div class="pai">
+            <p>div pai (10px)</p>
+            <p class="paragrafoEM">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eum veniam possimus impedit porro quas magni
+                excepturi accusantium? Ea, consectetur, corrupti rerum eligendi repellat perferendis quia quod corporis
+                facilis animi quidem. (2*10px = 20px)
+            </p>
+        </div>
+        <h1>rem</h1>
+        <div class="rem-box">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem dignissimos excepturi
+            perspiciatis quasi voluptas sunt eligendi accusantium? Sint ad sit dolore voluptatum? Officiis nisi
+            necessitatibus, eaque provident dolor beatae inventore.</div>
+    </div>
+    <button id="btn2" onclick="ex2()">Exercicio 2: Mostrar</button>
+    <div class="ex2">
+        <p class="exp">Quando a tela muda, a imagem relativa acompanha tanto crescendo e descrescendo para sempre cobrir
+            100% do espaço que ocupa, enquanto a imagem fixa permanece sempre em 300px</p>
+        <img class="fixa" src="img/MZD.webp" alt="Imagem1">
+        <p>Imagem fixa (300px)</p>
+        <img class="relativa" src="img/MZD.webp" alt="imagem2">
+        <p>Imagem relativs (100%)</p>
+    </div>
+    <button id="btn3" onclick="ex3()">Exercicio 3: Mostrar</button>
+    <div class="ex3">
+        <img src="https://media.tenor.com/PPAVaj0CzTMAAAAe/larry-spooky-larry.png" alt="Larry">
+        <h1 class="nome">Nome: Evil Larry</h1>
+        <p class="txt">Feito para o mal, ele transformou cidades em verdadeiros infernos, roubando estátuas, apagando
+            semáforos e rindo das sombras. Ninguém saberia quão perverso ele é, não fosse o rastro de confusão que deixa
+            por onde passa.</p>
+    </div>
+    <button id="btn4" onclick="ex4()">Exercicio 4: Mostrar</button>
+    <div class="ex4">
+        <div class="container">
+            <div class="secao home">Home</div>
+            <div class="secao sobre">Sobre</div>
+            <div class="secao contato">Contato</div>
+        </div>
+    </div>
+    <script>
+        const btn = document.getElementById("btn1")
+        const btn2 = document.getElementById("btn2")
+        const ex1Div = document.querySelector(".ex1")
+        const ex2Div = document.querySelector(".ex2")
+        const btn3 = document.getElementById("btn3")
+        const ex3Div = document.querySelector(".ex3")
+        const btn4 = document.getElementById("btn4")
+        const ex4Div = document.querySelector(".ex4")
+        ex1Div.style.display = "none"
+        
+        function ex1() {
+            if (ex1Div.style.display === "none") {
+                ex1Div.style.display = "flex"
+                ex1Div.style.flexDirection = "column"
+                ex1Div.style.alignItems = "center"
+                ex1Div.style.gap = "30px"
+                btn.innerText = "Exercicio 1: Esconder"
+            } else {
+                ex1Div.style.display = "none"
+                btn.innerText = "Exercicio 1: Mostrar"
+            }
+        }
+        function ex2() {
+            if (ex2Div.style.display === "none") {
+                ex2Div.style.display = "flex"
+                ex2Div.style.flexDirection = "column"
+                ex2Div.style.alignItems = "center"
+                ex2Div.style.gap = "30px"
+                btn2.innerText = "Exercicio 2: Esconder"
+            } else {
+                ex2Div.style.display = "none"
+                btn2.innerText = "Exercicio 2: Mostrar"
+            }
+        }
+        function ex3() {
+            if (ex3Div.style.display === "none") {
+                ex3Div.style.display = "flex"
+                ex3Div.style.flexDirection = "column"
+                ex3Div.style.alignItems = "center"
+                ex3Div.style.gap = "30px"
+                btn3.innerText = "Exercicio 3: Esconder"
+            } else {
+                ex3Div.style.display = "none"
+                btn3.innerText = "Exercicio 3: Mostrar"
+            }
+        }
+        function ex4() {
+            if (ex4Div.style.display === "none") {
+                ex4Div.style.display = "flex"
+                ex4Div.style.flexDirection = "column"
+                ex4Div.style.alignItems = "center"
+                ex4Div.style.gap = "30px"
+                btn4.innerText = "Exercicio 4: Esconder"
+            } else {
+                ex4Div.style.display = "none"
+                btn4.innerText = "Exercicio 4: Mostrar"
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design responsivo</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-sizing: border-box;
+        }
+        body{
+            background-color: rgba(255, 0, 0, 0.877);
+            color: white;
+        }
+        .container{
+            max-width: 400px;
+            margin: auto;
+        }
+        .container img{
+            max-width: 100%;
+            height: auto;
+        }
+        @media (max-width: 600px){
+            body{
+                background-color: rgb(255, 210, 61);
+                color: black;
+                justify-content: center;
+                text-align: center;
+            } 
+        }
+        @media (min-width: 601px) and (max-width: 1024px){
+            body{
+                color: white;
+                background-color: rgb(180, 0, 0);
+                justify-content: right;
+                text-align: right;
+            } 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="img/MZD.webp" alt="">
+        <h1>Miau Zedong</h1>
+        <p>Heroi nacional</p>
+    </div>
+</body>
+</html>
