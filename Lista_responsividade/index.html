@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Responsividade</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #bannerBg {
+    width: 100%;
+    max-width: 1024px;
+    height: 200px;
+    margin: 0 auto 30px auto;
+    background-image: url("img/bannerBg/Desktop.jpg");
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+}
+@media (max-width: 1024px) {
+    #bannerBg {
+        background-image: url("img/bannerBg/Tablet.jpg");
+    }
+}
+@media (max-width: 600px) {
+    #bannerBg {
+        background-image: url("img/bannerBg/Mobile.jpg");
+    }
+}
+        .perfil {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            margin-bottom: 30px;
+        }
+
+        .perfil img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .junta {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #Miau {
+            width: 300px;
+            margin-top: 10px;
+        }
+
+        #lampada {
+            width: 300px;
+            cursor: pointer;
+        }
+
+        .galeria {
+            text-align: center;
+        }
+
+        .destaque img {
+            width: 300px;
+            height: auto;
+            border: 3px solid #333;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .imagensMenores img {
+            width: 80px;
+            height: auto;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .imagensMenores img:hover {
+            border-color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Exercicio 1</h1>
+    <img src="" alt="" id="banner">
+
+    <h1>Exercicio 2</h1>
+    <img src="img/apagada.jpg" alt="" id="lampada">
+
+    <h1>Exercicio 3</h1>
+    <div class="junta">
+        <button onclick="alterarImagem()" id="ex3">Mostrar imagem</button>
+        <img src="" alt="" id="Miau">
+    </div>
+
+    <h1>Exercicio 4</h1>
+    <div class="perfil">
+        <img src="img/perfil/1.png" alt="" id="fotoPerfil">
+    </div>
+    <button onclick="trocarFoto()">Alterar Foto de Perfil</button>
+
+    <h1>Exercicio 5</h1>
+    <div class="galeria">
+        <div class="destaque">
+            <img id="imgDestaque" src="img/galeria/1.png" alt="Imagem destaque">
+        </div>
+        <nav class="imagensMenores">
+            <img src="img/galeria/2.png" alt="Miniatura 1" onclick="trocarImagem(this)">
+            <img src="img/galeria/3.png" alt="Miniatura 2" onclick="trocarImagem(this)">
+            <img src="img/galeria/4.png" alt="Miniatura 3" onclick="trocarImagem(this)">
+        </nav>
+    </div>
+
+    <h1>Exercicio 6</h1>
+    <div id="bannerBg"></div>
+
+    <h1>Exercicio 7</h1>
+<div class="carrossel">
+    <button id="prevBtn">Anterior</button>
+    <img id="carrosselImg" src="" alt="Carrossel" style="width:300px; margin: 0 15px; border-radius:8px;">
+    <button id="nextBtn">Próxima</button>
+</div>
+    <script>
+        const banner = document.getElementById('banner');
+        const bannerBg = document.getElementById('bannerBg');
+        const imagensCarrossel = [
+        'img/carrossel/1.png',
+        'img/carrossel/2.png',
+        'img/carrossel/3.png'
+    ];
+    let indiceAtual = 0;
+    const carrosselImg = document.getElementById('carrosselImg');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+        function atualizarBanner() {
+            if (window.innerWidth <= 600) {
+                banner.src = 'img/bannerMobile.jpg';
+            } else {
+                banner.src = 'img/bannerDesktop.jpg';
+            }
+        }
+        atualizarBanner();
+        window.addEventListener('resize', atualizarBanner);
+        window.addEventListener('resize', () => {
+            console.log(`Largura da janela: ${window.innerWidth}px`);
+        });
+        const lampada = document.getElementById('lampada');
+        const miau = document.getElementById('Miau');
+        const botao = document.getElementById('ex3');
+        function alterarImagem() {
+            if (miau.src.includes('img/MZD.webp')) {
+                miau.src = '';
+                botao.innerText = 'Mostrar imagem';
+            } else {
+                miau.src = 'img/MZD.webp';
+                botao.innerText = 'Esconder imagem';
+            }
+        }
+        function trocarFoto() {
+            const fotoPerfil = document.getElementById('fotoPerfil');
+            const fotos = [
+                'img/perfil/1.png',
+                'img/perfil/2.png',
+                'img/perfil/3.png',
+            ];
+            const srcAtual = fotoPerfil.src.split('/').pop();
+            let currentIndex = fotos.findIndex(f => f.endsWith(srcAtual));
+            let nextIndex = (currentIndex + 1) % fotos.length;
+            fotoPerfil.src = fotos[nextIndex];
+        }
+        function trocarImagem(elemento) {
+            const imgDestaque = document.getElementById('imgDestaque');
+            const tempSrc = imgDestaque.src;
+            imgDestaque.src = elemento.src;
+            elemento.src = tempSrc;
+        }
+        lampada.addEventListener('click', () => {
+            if (lampada.src.includes('img/acesa.jpg')) {
+                lampada.src = 'img/apagada.jpg';
+            } else {
+                lampada.src = 'img/acesa.jpg';
+            }
+        });
+         carrosselImg.src = imagensCarrossel[indiceAtual];
+
+    prevBtn.addEventListener('click', () => {
+        indiceAtual = (indiceAtual - 1 + imagensCarrossel.length) % imagensCarrossel.length;
+        carrosselImg.src = imagensCarrossel[indiceAtual];
+    });
+
+    nextBtn.addEventListener('click', () => {
+        indiceAtual = (indiceAtual + 1) % imagensCarrossel.length;
+        carrosselImg.src = imagensCarrossel[indiceAtual];
+    });
+    </script>
+</body>
+
+</html>
